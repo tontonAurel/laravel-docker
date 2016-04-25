@@ -1,0 +1,16 @@
+fpm:
+    build: ./config/docker/php/fpm
+    volumes:
+        - ./:/scripts/:ro
+        - ./storage/:/scripts/storage:rw
+        - ./storage/framework:/scripts/storage/framework:rw
+        - ./storage/framework/views:/scripts/storage/framework/views:rw
+web:
+    image: nginx
+    volumes:
+        - ./config/docker/nginx/conf.d:/etc/nginx/conf.d/:ro
+    links:
+        - fpm
+    environment:
+        - VIRTUAL_HOST=laravel.demo
+        - VIRTUAL_LABELS=dev laravel demo
